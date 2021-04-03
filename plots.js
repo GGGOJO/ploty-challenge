@@ -1,32 +1,32 @@
+// Set up a function to grab data for a selected sample ID for the Metadata Dashboard
 function buildMetadata(sample) {
-    d3.json("samples.json").then(function (data) {
+    d3.json("samples.json").then((data) => {
         var metadata = data.metadata;
-        var resultsArray = metadata.filter(function (data) {
-            return data.id == sample;
-        })
-        var result = resultsArray[0];
-        var panel = d3.select("#sample-metadata");
+        // Filter the json data for the object for the desired sample id
+        var resultArray = metadata.filter(sampleObj => sampleObj.id == sample);
+        var result = resultArray[0];
+        //Use d3 to select the dashboard Metadata panel with id for #sample-metadata
+        var PANEL = d3.select("#sample-metadata");
 
-        // Clear existing metadata
-        panel.html("");
+        // Clear any prior existing metadata
+        PANEL.html("");
 
-        Object.entries(result).forEach(function ([key, value]) {
-            panel.append("h6")
-                .text(`${key.toUpperCase()}" ${value}`);
+        // Use Object entries to add the key/value to the dashboard Metadata panel
+        Object.entries(result).forEach(([key, value]) => {
+            PANEL.append("h6").text(`${key.toUpperCase()}: ${value}`);
         });
 
         // Bonus build gauge chart
-        //buildGauge(result.wfreq);
+        buildGauge(result.wfreq);
     });
 }
 
+// Set up a function to grab data for a selected ID for Bubble and Bar Charts
 function buildCharts(sample) {
-    d3.json("samples.json").then(function (data) {
+    d3.json("samples.json").then((data) => {
         var samples = data.samples;
-        var resultsArray = samples.filter(function (data) {
-            return data.id === sample;
-        })
-        var result = resultsArray[0];
+        var resultArray = samples.filter(sampleObj => sampleObj.id == sample);
+        var result = resultArray[0];
 
         // extract the data from the dictionary lists
         var otu_ids = result.otu_ids;
@@ -37,7 +37,7 @@ function buildCharts(sample) {
         console.log(otu_labels)
         console.log(sample_values)
 
-        // // Build bubble chart that displays each sample
+        // Build bubble chart that displays each sample
         var bubbleLayout = {
             title: "Bacteria Cultures Per Sample",
             hovermode: "closest",
@@ -60,9 +60,7 @@ function buildCharts(sample) {
         ];
         Plotly.newPlot("bubble", bubbleData, bubbleLayout);
 
-        var yticks = otu_ids.slice(0, 10).map(function (otuID) {
-            return `OTU ${otuID}`;
-        }).reverse();
+        var yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
 
         var barData = [
             {
@@ -73,6 +71,7 @@ function buildCharts(sample) {
                 orientation: "h",
             }
         ];
+
         var barLayout = {
             title = "Top 10 Bacteria Cultures Found",
             margin: { t: 30, l: 150 }
@@ -80,9 +79,9 @@ function buildCharts(sample) {
 
         Plotly.newPlot("bar", barData, barLayout);
     });
-};
+}
 
-
+// Create a function to initalize the Dashboard with the default (first sample) data
 function init() {
     // Target the dropdown select element
     var selector = d3.select("#selDataset");
@@ -93,13 +92,14 @@ function init() {
 
         var sampleNames = data.names;
 
-        sampleNames.forEach((name) => {
+        sampleNames.forEach((sample) => {
             selector
                 .append("option")
-                .text(name)
-                .property("value", name)
+                .text(sample)
+                .property("value", sample)
         });
 
+        // Uses the first sample's json data to build the initial plots as the Dashboard's default
         var firstSample = sampleNames[0];
         //console.log(firstSample);
         buildCharts(firstSample);
@@ -107,6 +107,7 @@ function init() {
     });
 }
 
+// Create a function to grab new json data each time a new sample is selected from dropdown Menu
 function optionChange(newSample) {
     buildCharts(newSample);
     buildMetadata(newSample);
