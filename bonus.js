@@ -9,7 +9,7 @@ function buildGauge(wfreq) {
     var x = radius * Math.cos(radians);
     var y = radius * Math.sin(radians);
 
-    var mainPath = "M -.0 -0.5 L .0 0.05 L";
+    var mainPath = "M -.0 -0.05 L .0 0.05 L ";
     var pathX = String(x);
     var space = " ";
     var pathY = String(y);
@@ -28,7 +28,7 @@ function buildGauge(wfreq) {
             hoverinfo: "text+namej"
         },
         {
-            values: [50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9,],
+            values: [50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50 / 9, 50],
             rotation: 90,
             text: ["8-9", "7-8", "6-7", "5-6", "4-5", "3-4", "2-3", "1-2", "0-1", ""],
             textinfo: "text",
@@ -47,7 +47,7 @@ function buildGauge(wfreq) {
                     "rgba(255, 255, 255, 0)"
                 ]
             },
-            labels: ["8-9", "7-8", "6-7", "5-6", "4-5", "3-4", "2-3", "1-2", "0-1"],
+            labels: ["8-9", "7-8", "6-7", "5-6", "4-5", "3-4", "2-3", "1-2", "0-1", ""],
             hoverinfo: "label",
             hole: 0.5,
             type: "pie",

@@ -73,7 +73,7 @@ function buildCharts(sample) {
         ];
 
         var barLayout = {
-            title = "Top 10 Bacteria Cultures Found",
+            title: "Top 10 Bacteria Cultures Found",
             margin: { t: 30, l: 150 }
         };
 
@@ -108,7 +108,7 @@ function init() {
 }
 
 // Create a function to grab new json data each time a new sample is selected from dropdown Menu
-function optionChange(newSample) {
+function optionChanged(newSample) {
     buildCharts(newSample);
     buildMetadata(newSample);
 };
